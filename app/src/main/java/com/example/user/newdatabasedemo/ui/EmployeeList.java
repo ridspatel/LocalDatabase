@@ -108,8 +108,10 @@ public class EmployeeList extends Activity implements View.OnClickListener {
                 System.out.println("=====empID=========" + empID);
                 String result = validate();
                 if (result != null) {
+                    System.out.println("=====result != null=========" + result);
                     Toast.makeText(this, result, Toast.LENGTH_LONG).show();
                 } else {
+                    System.out.println("=====result == null=========" + result);
                     employeeBean.id = empID;
                     employeeBean.name = edtEditname.getText().toString();
                     employeeBean.email = edtEditemail.getText().toString();
@@ -167,11 +169,11 @@ public class EmployeeList extends Activity implements View.OnClickListener {
 
     private String validate() {
         String msg = null;
-        if (edtEditname.getText().toString() == null && edtEditname.getText().toString().equals("")) {
+        if (edtEditname.getText().toString() == null || edtEditname.getText().toString().equals("")) {
             msg = "Please enter name";
             edtEditname.requestFocus();
             edtEditname.setSelection(edtEditname.length());
-        } else if (edtEditemail.getText().toString() == null && edtEditemail.getText().toString().equals("")) {
+        } else if (edtEditemail.getText().toString() == null || edtEditemail.getText().toString().equals("")) {
             msg = "Please enter email";
             edtEditemail.requestFocus();
             edtEditemail.setSelection(edtEditemail.length());
@@ -179,11 +181,12 @@ public class EmployeeList extends Activity implements View.OnClickListener {
             msg = "Please enter valid email";
             edtEditemail.requestFocus();
             edtEditemail.setSelection(edtEditemail.length());
-        } else if (edtEditsal.getText().toString() == null && edtEditsal.getText().toString().equals("")) {
+        } else if (edtEditsal.getText().toString() == null || edtEditsal.getText().toString().equals("")) {
+            System.out.println("=====validate=========" + edtEditsal.getText().toString());
             msg = "Please enter salary";
             edtEditsal.requestFocus();
             edtEditsal.setSelection(edtEditsal.length());
-        } else if (edtEditdate.getText().toString() == null && edtEditdate.getText().toString().equals("")) {
+        } else if (edtEditdate.getText().toString() == null || edtEditdate.getText().toString().equals("")) {
             msg = "Please select date";
             edtEditdate.requestFocus();
             edtEditdate.setSelection(edtEditdate.length());
