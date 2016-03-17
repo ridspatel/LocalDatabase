@@ -13,11 +13,13 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.newdatabasedemo.R;
 import com.example.user.newdatabasedemo.adapter.EmployeeAdapter;
 import com.example.user.newdatabasedemo.bean.EmployeeBean;
 import com.example.user.newdatabasedemo.bll.EmployeeBll;
+import com.example.user.newdatabasedemo.utils.Util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,14 +31,14 @@ public class EmployeeList extends Activity implements View.OnClickListener {
 
     private ListView empListView;
     private RelativeLayout llEditView;
-    EditText edtEditname, edtEditemail, edtEditsal, edtEditdate;
-    ImageButton imageButton;
-    Button btnUpdateData;
+    private EditText edtEditname, edtEditemail, edtEditsal, edtEditdate;
+    private ImageButton imageButton;
+    private Button btnUpdateData;
 
-    Calendar cal;
-    int mCurrentYear, mCurrentMonth, mCurrentDay;
-    int mYear, mMonth, mDay;
-    DatePickerDialog mDatePickerDialog;
+    private Calendar cal;
+    private int mCurrentYear, mCurrentMonth, mCurrentDay;
+    private int mYear, mMonth, mDay;
+    private DatePickerDialog mDatePickerDialog;
 
     private EmployeeAdapter employeeAdapter;
     private ArrayList<EmployeeBean> empList;
@@ -46,7 +48,6 @@ public class EmployeeList extends Activity implements View.OnClickListener {
     private EmployeeBean getEmpBean;
 
     int empID;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,14 +106,19 @@ public class EmployeeList extends Activity implements View.OnClickListener {
 
             case R.id.btnUpdateData:
                 System.out.println("=====empID=========" + empID);
-                employeeBean.id = empID;
-                employeeBean.name = edtEditname.getText().toString();
-                employeeBean.email = edtEditemail.getText().toString();
-                employeeBean.salary = edtEditsal.getText().toString();
-                employeeBean.date = edtEditdate.getText().toString();
-                employeeBll.update(employeeBean);
-                startActivity(getIntent());
-                finish();
+                String result = validate();
+                if (result != null) {
+                    Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+                } else {
+                    employeeBean.id = empID;
+                    employeeBean.name = edtEditname.getText().toString();
+                    employeeBean.email = edtEditemail.getText().toString();
+                    employeeBean.salary = edtEditsal.getText().toString();
+                    employeeBean.date = edtEditdate.getText().toString();
+                    employeeBll.update(employeeBean);
+                    startActivity(getIntent());
+                    finish();
+                }
                 break;
 
             case R.id.btnUpdate:
@@ -159,32 +165,32 @@ public class EmployeeList extends Activity implements View.OnClickListener {
         }
     }
 
-//    private String validate() {
-//        String msg = null;
-//        if (edtEditname.getText().toString() == null && edtEditname.getText().toString().equals("")) {
-//            msg = "Please enter name";
-//            edtEditname.requestFocus();
-//            edtEditname.setSelection(edtEditname.length());
-//        } else if (edtEditemail.getText().toString() == null && edtEditemail.getText().toString().equals("")) {
-//            msg = "Please enter email";
-//            edtEditemail.requestFocus();
-//            edtEditemail.setSelection(edtEditemail.length());
-//        } else if (!Util.EMAIL_PATTERN.matcher(edtEditemail.getText().toString()).matches()) {
-//            msg = "Please enter valid email";
-//            edtEditemail.requestFocus();
-//            edtEditemail.setSelection(edtEditemail.length());
-//        } else if (edtEditsal.getText().toString() == null && edtEditsal.getText().toString().equals("")) {
-//            msg = "Please enter salary";
-//            edtEditsal.requestFocus();
-//            edtEditsal.setSelection(edtEditsal.length());
-//        } else if (edtEditdate.getText().toString() == null && edtEditdate.getText().toString().equals("")) {
-//            msg = "Please select date";
-//            edtEditdate.requestFocus();
-//            edtEditdate.setSelection(edtEditdate.length());
-//        }
-//
-//        return msg;
-//    }
+    private String validate() {
+        String msg = null;
+        if (edtEditname.getText().toString() == null && edtEditname.getText().toString().equals("")) {
+            msg = "Please enter name";
+            edtEditname.requestFocus();
+            edtEditname.setSelection(edtEditname.length());
+        } else if (edtEditemail.getText().toString() == null && edtEditemail.getText().toString().equals("")) {
+            msg = "Please enter email";
+            edtEditemail.requestFocus();
+            edtEditemail.setSelection(edtEditemail.length());
+        } else if (!Util.EMAIL_PATTERN.matcher(edtEditemail.getText().toString()).matches()) {
+            msg = "Please enter valid email";
+            edtEditemail.requestFocus();
+            edtEditemail.setSelection(edtEditemail.length());
+        } else if (edtEditsal.getText().toString() == null && edtEditsal.getText().toString().equals("")) {
+            msg = "Please enter salary";
+            edtEditsal.requestFocus();
+            edtEditsal.setSelection(edtEditsal.length());
+        } else if (edtEditdate.getText().toString() == null && edtEditdate.getText().toString().equals("")) {
+            msg = "Please select date";
+            edtEditdate.requestFocus();
+            edtEditdate.setSelection(edtEditdate.length());
+        }
+
+        return msg;
+    }
 
     DatePickerDialog.OnDateSetListener mOnDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
